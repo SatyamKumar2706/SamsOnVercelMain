@@ -9,11 +9,13 @@ dotenv.config(); // Load environment variables
 
 const PORT = process.env.PORT || 5000;
 
+// app.use(cors()); // Temporarily allow all origins
+
 // Set up CORS configuration
 app.use(cors({
-    origin:"https://sams-frontend-on-versel--mocha.vercel.app",
+    origin:"*",
     credentials: true, // Allow credentials to be included in requests
-    optionSuccessStatus:200
+    optionsSuccessStatus:200
 }));
 
 app.use(express.json({ limit: '10mb' }));
