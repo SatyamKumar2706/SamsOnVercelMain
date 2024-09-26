@@ -1,26 +1,22 @@
-const express = require("express")
-const cors = require("cors")
-const mongoose = require("mongoose")
-const dotenv = require("dotenv")
-// const bodyParser = require("body-parser")
-const app = express()
-const Routes = require("./routes/route.js")
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const app = express();
+const Routes = require("./routes/route.js");
 
-const PORT = process.env.PORT || 5000
+dotenv.config(); // Load environment variables
 
+const PORT = process.env.PORT || 5000;
 
+// CORS options
+const corsOptions = {
+    origin: process.env.FRONTEND_URL, // Make sure this is defined in your .env file
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Allow cookies to be sent if needed
+};
 
-dotenv.config();
-
-// app.use(bodyParser.json({ limit: '10mb', extended: true }))
-// app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
-
-// Set up CORS configuration
-app.use(cors({
-    origin: 'https://sams-frontend-on-versel--mocha.vercel.app', // Your frontend URL
-    credentials: true // Allow credentials to be included in requests
-}));
-
+app.use(cors(corsOptions)); // Apply CORS middleware
 app.use(express.json({ limit: '10mb' }));
 
 mongoose
@@ -34,5 +30,5 @@ mongoose
 app.use('/', Routes);
 
 app.listen(PORT, () => {
-    console.log(`Server started at port no. ${PORT}`)
+    console.log(`Server started at port no. ${PORT}`);
 });
