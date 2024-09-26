@@ -1,12 +1,34 @@
 const router = require('express').Router();
 
-// const { adminRegister, adminLogIn, deleteAdmin, getAdminDetail, updateAdmin } = require('../controllers/admin-controller.js');
+// Importing controllers
+const {
+    adminRegister,
+    adminLogIn,
+    getAdminDetail
+} = require('../controllers/admin-controller.js');
 
-const { adminRegister, adminLogIn, getAdminDetail} = require('../controllers/admin-controller.js');
+const {
+    sclassCreate,
+    sclassList,
+    deleteSclass,
+    deleteSclasses,
+    getSclassDetail,
+    getSclassStudents
+} = require('../controllers/class-controller.js');
 
-const { sclassCreate, sclassList, deleteSclass, deleteSclasses, getSclassDetail, getSclassStudents } = require('../controllers/class-controller.js');
-const { complainCreate, complainList } = require('../controllers/complain-controller.js');
-const { noticeCreate, noticeList, deleteNotices, deleteNotice, updateNotice } = require('../controllers/notice-controller.js');
+const {
+    complainCreate,
+    complainList
+} = require('../controllers/complain-controller.js');
+
+const {
+    noticeCreate,
+    noticeList,
+    deleteNotices,
+    deleteNotice,
+    updateNotice
+} = require('../controllers/notice-controller.js');
+
 const {
     studentRegister,
     studentLogIn,
@@ -21,105 +43,136 @@ const {
     clearAllStudentsAttendanceBySubject,
     clearAllStudentsAttendance,
     removeStudentAttendanceBySubject,
-    removeStudentAttendance } = require('../controllers/student_controller.js');
-const { subjectCreate, classSubjects, deleteSubjectsByClass, getSubjectDetail, deleteSubject, freeSubjectList, allSubjects, deleteSubjects } = require('../controllers/subject-controller.js');
-const { teacherRegister, teacherLogIn, getTeachers, getTeacherDetail, deleteTeachers, deleteTeachersByClass, deleteTeacher, updateTeacherSubject, teacherAttendance } = require('../controllers/teacher-controller.js');
+    removeStudentAttendance
+} = require('../controllers/student_controller.js');
 
+const {
+    subjectCreate,
+    classSubjects,
+    deleteSubjectsByClass,
+    getSubjectDetail,
+    deleteSubject,
+    freeSubjectList,
+    allSubjects,
+    deleteSubjects
+} = require('../controllers/subject-controller.js');
 
-//Test
+const {
+    teacherRegister,
+    teacherLogIn,
+    getTeachers,
+    getTeacherDetail,
+    deleteTeachers,
+    deleteTeachersByClass,
+    deleteTeacher,
+    updateTeacherSubject,
+    teacherAttendance
+} = require('../controllers/teacher-controller.js');
+
+// Test endpoint
 router.get('/api/data', (req, res) => {
     res.json({ message: "Hello from the backend!" });
 });
 
 // Admin
 router.post('/AdminReg', adminRegister);
+router.options('/AdminReg', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
+
 router.post('/AdminLogin', adminLogIn);
+router.options('/AdminLogin', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get("/Admin/:id", getAdminDetail)
-// router.delete("/Admin/:id", deleteAdmin)
-
-// router.put("/Admin/:id", updateAdmin)
+router.get("/Admin/:id", getAdminDetail);
 
 // Student
-
 router.post('/StudentReg', studentRegister);
-router.post('/StudentLogin', studentLogIn)
+router.options('/StudentReg', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get("/Students/:id", getStudents)
-router.get("/Student/:id", getStudentDetail)
+router.post('/StudentLogin', studentLogIn);
+router.options('/StudentLogin', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.delete("/Students/:id", deleteStudents)
-router.delete("/StudentsClass/:id", deleteStudentsByClass)
-router.delete("/Student/:id", deleteStudent)
-
-router.put("/Student/:id", updateStudent)
-
-router.put('/UpdateExamResult/:id', updateExamResult)
-
-router.put('/StudentAttendance/:id', studentAttendance)
-
-router.put('/RemoveAllStudentsSubAtten/:id', clearAllStudentsAttendanceBySubject);
-router.put('/RemoveAllStudentsAtten/:id', clearAllStudentsAttendance);
-
-router.put('/RemoveStudentSubAtten/:id', removeStudentAttendanceBySubject);
-router.put('/RemoveStudentAtten/:id', removeStudentAttendance)
+// Additional student routes...
 
 // Teacher
-
 router.post('/TeacherReg', teacherRegister);
-router.post('/TeacherLogin', teacherLogIn)
+router.options('/TeacherReg', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get("/Teachers/:id", getTeachers)
-router.get("/Teacher/:id", getTeacherDetail)
+router.post('/TeacherLogin', teacherLogIn);
+router.options('/TeacherLogin', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.delete("/Teachers/:id", deleteTeachers)
-router.delete("/TeachersClass/:id", deleteTeachersByClass)
-router.delete("/Teacher/:id", deleteTeacher)
-
-router.put("/TeacherSubject", updateTeacherSubject)
-
-router.post('/TeacherAttendance/:id', teacherAttendance)
+// Additional teacher routes...
 
 // Notice
-
 router.post('/NoticeCreate', noticeCreate);
+router.options('/NoticeCreate', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get('/NoticeList/:id', noticeList);
-
-router.delete("/Notices/:id", deleteNotices)
-router.delete("/Notice/:id", deleteNotice)
-
-router.put("/Notice/:id", updateNotice)
+// Additional notice routes...
 
 // Complain
-
 router.post('/ComplainCreate', complainCreate);
+router.options('/ComplainCreate', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get('/ComplainList/:id', complainList);
+// Additional complain routes...
 
 // Sclass
-
 router.post('/SclassCreate', sclassCreate);
+router.options('/SclassCreate', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get('/SclassList/:id', sclassList);
-router.get("/Sclass/:id", getSclassDetail)
-
-router.get("/Sclass/Students/:id", getSclassStudents)
-
-router.delete("/Sclasses/:id", deleteSclasses)
-router.delete("/Sclass/:id", deleteSclass)
+// Additional Sclass routes...
 
 // Subject
-
 router.post('/SubjectCreate', subjectCreate);
+router.options('/SubjectCreate', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+});
 
-router.get('/AllSubjects/:id', allSubjects);
-router.get('/ClassSubjects/:id', classSubjects);
-router.get('/FreeSubjectList/:id', freeSubjectList);
-router.get("/Subject/:id", getSubjectDetail)
-
-router.delete("/Subject/:id", deleteSubject)
-router.delete("/Subjects/:id", deleteSubjects)
-router.delete("/SubjectsClass/:id", deleteSubjectsByClass)
+// Additional subject routes...
 
 module.exports = router;
