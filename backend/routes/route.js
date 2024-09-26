@@ -69,6 +69,10 @@ const {
     teacherAttendance
 } = require('../controllers/teacher-controller.js');
 
+router.get('/test', (req, res) => {
+    res.json({ message: "CORS is working!" });
+});
+
 // Test endpoint
 router.get('/api/data', (req, res) => {
     res.json({ message: "Hello from the backend!" });
