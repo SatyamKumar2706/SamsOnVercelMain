@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = express();
@@ -9,16 +8,21 @@ dotenv.config(); // Load environment variables
 
 const PORT = process.env.PORT || 5000;
 
-// app.use(cors()); // Temporarily allow all origins
+// Manually add CORS headers to each response
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
 
-// Set up CORS configuration
-app.use(cors({
-    origin:"*",
-    credentials: true, // Allow credentials to be included in requests
-    optionsSuccessStatus:200
-}));
+    // Handle preflight OPTIONS request
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
+    }
 
-app.use(express.json({ limit: '10mb' }));
+    next();
+});
+
+app.use(express.json({ limit: '10mb' })); // Parse JSON payloads
 
 mongoose
     .connect(process.env.MONGO_URL, {
@@ -28,6 +32,7 @@ mongoose
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.log("NOT CONNECTED TO NETWORK", err));
 
+// Use the routes defined in the `route.js` file
 app.use('/', Routes);
 
 app.listen(PORT, () => {
