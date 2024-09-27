@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors"); // Import the 'cors' package
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = express();
@@ -8,19 +9,17 @@ dotenv.config(); // Load environment variables
 
 const PORT = process.env.PORT || 5000;
 
-// Manually add CORS headers to each response
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, PATCH, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+// Custom CORS configuration to allow only one origin
+const corsOptions = {
+    origin: "https://sams-frontend-on-versel--mocha.vercel.app", // Allow only this origin
+    methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS", // Allowed HTTP methods
+    allowedHeaders: "Content-Type, Authorization, X-Requested-With", // Allowed request headers
+    credentials: true, // Allow cookies and authorization headers in cross-origin requests
+    optionsSuccessStatus: 200 // Legacy browsers choke on status 204, so use 200 instead
+};
 
-    // Handle preflight OPTIONS request
-    if (req.method === "OPTIONS") {
-        return res.status(200).end();
-    }
-
-    next();
-});
+// Use CORS middleware with custom configuration
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '10mb' })); // Parse JSON payloads
 
