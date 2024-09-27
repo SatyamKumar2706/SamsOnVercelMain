@@ -33,12 +33,6 @@ router.get('/api/data', (req, res) => {
 
 // Admin
 router.post('/AdminReg', adminRegister);
-router.options('/AdminReg', (req, res) => {
-    res.header('Access-Control-Allow-Origin', 'https://sams-frontend-on-versel--mocha.vercel.app');
-    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.sendStatus(200);
-});
 router.post('/AdminLogin', adminLogIn);
 
 router.get("/Admin/:id", getAdminDetail)
