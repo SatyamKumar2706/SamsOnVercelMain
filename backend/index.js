@@ -9,9 +9,19 @@ dotenv.config(); // Load environment variables
 
 const PORT = process.env.PORT || 5000;
 
-// Custom CORS configuration to allow only one origin
+// Custom CORS configuration
 const corsOptions = {
-    origin: "https://sams-frontend-on-versel--mocha.vercel.app", // Allow only this origin
+    origin: (origin, callback) => {
+        // Allow all origins or specify conditions here
+        // If you want to restrict to certain origins, you can do it like this:
+        // const allowedOrigins = ['http://example.com', 'http://anotherdomain.com'];
+        // if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        //     callback(null, true); // Allow the request
+        // } else {
+        //     callback(new Error('Not allowed by CORS')); // Reject the request
+        // }
+        callback(null, "*"); // Allows all origins
+    },
     methods: "GET, PUT, POST, DELETE, PATCH, OPTIONS", // Allowed HTTP methods
     allowedHeaders: "Content-Type, Authorization, X-Requested-With", // Allowed request headers
     credentials: true, // Allow cookies and authorization headers in cross-origin requests
