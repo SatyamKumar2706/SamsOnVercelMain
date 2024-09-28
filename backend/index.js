@@ -7,17 +7,22 @@ const Routes = require("./routes/route.js");
 
 dotenv.config(); // Load environment variables
 
-const PORT = process.env.PORT || 5000;
 
 // app.use(cors()); // Temporarily allow all origins
 
 // Set up CORS configuration
-app.use(cors({
-    origin:"*",
+const corsOptions = {
+    origin: 'https://sams-frontend-on-versel--mocha.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    credentials: true, // Allow credentials to be included in requests
-    optionsSuccessStatus:200
-}));
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+
+// Enable pre-flight requests for all routes
+app.options('*', cors(corsOptions));
 
 app.use(express.json({ limit: '10mb' }));
 
@@ -31,6 +36,7 @@ mongoose
 
 app.use('/', Routes);
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server started at port no. ${PORT}`);
 });
